@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ImagesController } from './images.controller';
 import { UploadOutletImageProxy } from './proxies/outlet-image-upload.proxy';
+import { LlmImageOptimizationProxy } from './proxies/llm-image-optimization.proxy';
 import { KafkaProducerService } from 'src/kafka-producer/kafka-producer.service';
 import { OutletPhotoService } from 'src/outlet/services/outlet-photo.service';
 import { OutletPhoto } from 'src/outlet/models/outlet-photo.model';
@@ -19,6 +20,7 @@ import { CustomLoggerModule } from 'src/logger/logger.module';
     UploadOutletImageProxy,
     OutletKafkaProducerService,
     DataOperationsProducer,
+    LlmImageOptimizationProxy,
   ],
   imports: [
     ConfigModule.forRoot({

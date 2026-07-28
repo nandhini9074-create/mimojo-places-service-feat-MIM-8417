@@ -9,6 +9,7 @@ import { extname } from 'path';
 import { OutletPhotoService } from '../../outlet/services/outlet-photo.service';
 import { UploadOutletImageDto } from 'src/images/dtos/upload-outlet-image-dto';
 import { UploadOutletImageProxy } from 'src/images/proxies/outlet-image-upload.proxy';
+import { LlmImageOptimizationProxy } from 'src/images/proxies/llm-image-optimization.proxy';
 
 @Injectable()
 export class OutletKafkaProducerService {
@@ -22,7 +23,8 @@ export class OutletKafkaProducerService {
     private readonly producerService: KafkaProducerService,
     private configService: ConfigService,
     private outletPhotoService: OutletPhotoService,
-    private uploadOutletImageProxy: UploadOutletImageProxy
+    private uploadOutletImageProxy: UploadOutletImageProxy,
+    private llmImageOptimizationProxy: LlmImageOptimizationProxy
   ) {
     this.config = this.configService.get('kafka-producer');
     const { BLOB_CONNECTION_STRING, BLOB_CONTAINER_NAME, BLOB_SAS_TOKEN, BLOB_URL } =
@@ -48,9 +50,11 @@ export class OutletKafkaProducerService {
         const id: string = uuid();
         const fileName = `${id}${extname(image.originalname)}`;
 
+        const optimizedBuffer = await this.llmImageOptimizationProxy.proxyImageToImagesService(image.buffer, image.originalname);
+
         //Uploading to Blob
         const blobClient = this.getBlobClient(fileName);
-        await blobClient.uploadData(image.buffer);
+        await blobClient.uploadData(optimizedBuffer);
 
         await this.pushToOutletImageService(
           uploadOutletImage.outletId,
