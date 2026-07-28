@@ -1,0 +1,35 @@
+name: Validate JIRA Ticket
+
+permissions:
+  contents: read
+  pull-requests: read
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  validate-jira:
+    runs-on: ubuntu-latest
+    env:                    # 👈 inject the raw values safely
+      PR_TITLE: ${{ github.event.pull_request.title }}
+      PR_BODY:  ${{ github.event.pull_request.body }}
+      JIRA_REGEX: 'https:\/\/mimojo\.atlassian\.net\/browse\/(TSD|MIM)-[0-9]+'
+
+    steps:
+      - name: Fail if JIRA Ticket missing
+        shell: bash
+        run: |
+          echo "🔍 Scanning PR for required JIRA link…"
+          echo "::group::Debug info"
+          echo "Title 👉 $PR_TITLE"
+          echo "Body  👉 $PR_BODY"
+          echo "::endgroup::"
+
+          if [[ "$PR_TITLE" =~ $JIRA_REGEX ]] || [[ "$PR_BODY" =~ $JIRA_REGEX ]]; then
+            echo "✅ JIRA ticket detected."
+          else
+            echo "❌ No valid JIRA ticket link found in title or body."
+            echo "   Add something like: https://mimojo.atlassian.net/browse/TSD-1234"
+            exit 1
+          fi

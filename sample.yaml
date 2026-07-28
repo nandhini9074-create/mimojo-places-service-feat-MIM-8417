@@ -1,0 +1,25 @@
+apiVersion: v1 
+kind: Service
+metadata:
+  name: rabbitmq-cluster-lb
+  namespace: rabbitmq
+spec:
+  ports:
+    - name: prometheus
+      protocol: TCP
+      appProtocol: prometheus.io/metrics
+      port: 15692
+      targetPort: 15692
+    - name: amqp
+      protocol: TCP
+      appProtocol: amqp
+      port: 5672
+      targetPort: 5672
+    - name: management
+      protocol: TCP
+      appProtocol: http
+      port: 15672
+      targetPort: 15672
+  selector:
+    app.kubernetes.io/name: rabbitmq-cluster
+  type: LoadBalancer

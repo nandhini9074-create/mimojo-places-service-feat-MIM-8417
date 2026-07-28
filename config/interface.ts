@@ -1,0 +1,142 @@
+import { EnvironmentEnum } from 'env.validation';
+import { Dialect } from 'sequelize/types';
+
+export interface IAppConfig {
+  SERVER_HTTP_HOST: string;
+  SERVER_HTTP_PORT: number;
+  NODE_ENV: EnvironmentEnum;
+  IS_SWAGGER_ENABLED: boolean;
+  DOMAIN_URL: string;
+  IS_REWARD_ENGINE_ENABLED: boolean;
+}
+
+export interface IDatabaseConfig {
+  DB_DIALECT: Dialect;
+  DB_PORT: number;
+  DB_DATABASE: string;
+  DB_AUTO_LOAD_MODELS: boolean;
+  DB_SYNC: boolean;
+  DB_FORCE: boolean;
+  DB_POOL_MIN: number;
+  DB_POOL_MAX: number;
+  DB_LOGGING: boolean;
+  DB_UNDERSCORED: boolean;
+  DB_HOST: string;
+  DB_USERNAME: string;
+  DB_PASSWORD: string;
+  DB_SSL: boolean;
+}
+
+export interface IKafkaProducerConfig {
+  KAFKA_PRODUCER_BROKERS: string;
+  KAFKA_CLIENT_ID: string;
+  KAFKA_ALLOW_AUTO_TOPIC_CREATION: boolean;
+  KAFKA_AUTO_COMMIT: boolean;
+  KAFKA_TOPIC: string;
+  KAFKA_AUDIT_LOG_TOPIC: string;
+  KAFKA_OUTLET_OFFER_TOPIC: string;
+  KAFKA_MAX_OFFER_TOPIC: string;
+  KAFKA_NOTIFICATION_TOPIC: string;
+  KAFKA_POS_TOPIC: string;
+  KAFKA_MERCHANT_OFFER_TOPIC: string;
+  KAFKA_MERCHANT_PAYMENT_TERMS_TOPIC: string;
+  KAFKA_OUTLET_ACTIVE_STATUS_TOPIC: string;
+}
+
+export interface IKafkaConsumerConfig {
+  KAFKA_MAX_OFFER_TOPIC: string;
+  KAFKA_FROM_BEGINING: boolean;
+  KAFKA_AUTO_COMMIT: boolean;
+  KAFKA_OFFER_MAX_VALUE_GROUP: string;
+  KAFKA_CONSUMER_BROKERS: string;
+  KAFKA_CLIENT_ID: string;
+}
+
+export interface IInternalApiConfig {
+  MERCHANT_CATEGORIES: string;
+  MERCHANT_GET_BY_ID_URL: string;
+  ALL_OUTLETS_OFFERS_OF_MERCHANT: string;
+  ALL_OFFERS_OF_OUTLET: string;
+  MIMOJO_PROFILE_ID: string;
+  EIB_PROFILE_ID: string;
+  ADIB_PROFILE_ID: string;
+  CREATE_OUTLET_DEFAULT_OFFER: string;
+  UPDATE_ACTIVE_INACTIVE_OUTLET_COUNT: string;
+  UPLOAD_OUTLET_IMAGE: string;
+  CORE_UPDATE_OUTLET: string;
+  MERCHANT_ACQUIRER: string;
+  USE_MERCHANT_ACQUIRER: boolean;
+  SCHEME_SERVICE_OUTLET_STATUS: string;
+  SCHEME_SERVICE_DISABLE_OUTLETS: string;
+  SCHEME_SERVICE_ENABLE_OUTLETS: string;
+  MOENGAGE_OUTLET_EVENT: string;
+  MOENGAGE_OUTLET_EVENT_URL: string;
+  E_COMMERCE_CATEGORY_ID: string;
+  FINANCE_SERVICE_URL: string;
+  FB_CATEGORY_ID: string;
+  CATEGORY_TYPES: string;
+  MANAGEMENT_REPORTING_OUTLET_URL: string;
+  OUTLET_SCHEDULED_OFFER: string;
+  GET_MERCHANT_GROUPS_URL: string;
+  MC_SCHEME_SERVICE_DISABLE_OUTLETS: string;
+  MC_SCHEME_SERVICE_ENABLE_OUTLETS: string;
+  MC_SCHEME_SERVICE_OUTLET_STATUS: string;
+  OUTLET_OFFER: string;
+  FAST_PAYMENT_SERVICE_URL: string;
+  POS_SERVICE_URL: string;
+  SHOW_ME_EVERYTHING_CATEGORY_ID: string;
+  QATAR_CITY_ID: string;
+  CORE_PAYOUT_URL: string;
+  ALL_OUTLETS_OFFERS_OF_MERCHANT_PROFILE: string;
+  SEARCH_SERVICE_UPDATE_PAYLOAD_URL: string;
+  GRAVITEE_URL: string;
+  GRAVITEE_API_KEY: string;
+  OFFER_URL: string;
+  ALL_REWARDS_OF_OUTLET: string;
+  CHECK_ACTIVE_OFFER_MERCHANT_URL: string;
+  REWARD_ENGINE_SERVICE_URL: string;
+  REWARD_ENGINE_WRAPPER_SERVICE_URL: string;
+  PAYOUT_CONFIG_RE_MERCHANT_URL: string;
+}
+
+export interface IGooglePlacesConfiguration {
+  GOOGLE_API_KEY: string;
+  GOOGLE_PLACES_FIELDS: string;
+}
+
+export interface IBlobConfig {
+  BLOB_URL: string;
+  BLOB_SAS_TOKEN: string;
+  BLOB_CONNECTION_STRING: string;
+  BLOB_CONTAINER_NAME: string;
+}
+
+export interface IKafkaConfig {
+  KAFKA_CLIENT_ID: string;
+  KAFKA_GROUP_ID: string;
+  KAFKA_ALLOW_AUTO_TOPIC_CREATION: boolean;
+  KAFKA_AUTO_COMMIT: boolean;
+  KAFKA_FROM_BEGINING: boolean;
+  KAFKA_MAX_OFFER_TOPIC: string;
+  KAFKA_MR_TOPIC: string;
+  KAFKA_PROMO_TOPIC: string;
+  KAFKA_SUBSCRIPTION_DELETE_TOPIC: string;
+  KAFKA_MERCHANT_OFFER_TOPIC: string;
+  KAFKA_MERCHANT_PAYMENT_TERMS_TOPIC: string;
+  KAFKA_CEP_EVENT_TOPIC: string;
+  KAFKA_AUDIT_LOG_TOPIC: string;
+  KAFKA_EMAIL_NOTIFICATION_TOPIC: string;
+  KAFKA_OFFER_CHANGE_EMAIL_NOTIFICATION_TOPIC: string;
+  KAFKA_OFFER_CHANGE_EMAIL_NOTIFICATION_GROUP: string;
+  KAFKA_OFFER_MAX_VALUE_GROUP: string;
+  AUTO_ENROLLED_CONSUMER_CREATE_TOPIC: string;
+  AUTO_ENROLLED_CONSUMER_CREATE_KAFKA_GROUP: string;
+  AUTO_ENROLLED_CONSUMER_SUBSCRIPTION_TOPIC: string;
+  KAFKA_CONSUMER_PROFILE: string;
+  KAFKA_CONSUMER_PROFILE_GROUP: string;
+}
+
+export interface IGrafanaConfig {
+  OTEL_EXPORTER_OTLP_ENDPOINT: string;
+  SERVICE_NAME: string;
+}
