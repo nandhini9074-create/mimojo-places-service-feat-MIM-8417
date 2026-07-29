@@ -60,6 +60,7 @@ export interface IInternalApiConfig {
   MIMOJO_PROFILE_ID: string;
   EIB_PROFILE_ID: string;
   ADIB_PROFILE_ID: string;
+  LLM_MASTER_PROFILE_ID: string;
   CREATE_OUTLET_DEFAULT_OFFER: string;
   UPDATE_ACTIVE_INACTIVE_OUTLET_COUNT: string;
   UPLOAD_OUTLET_IMAGE: string;

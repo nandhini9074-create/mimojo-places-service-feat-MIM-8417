@@ -24,7 +24,7 @@ export class KafkaMessageConsumerService implements OnModuleInit {
   }
 
   async receiveMaxValueForOutlets() {
-    await this.kafkaConsumerService.consume(
+    /*await this.kafkaConsumerService.consume(
       {
         topics: [this.config.KAFKA_MAX_OFFER_TOPIC],
         fromBeginning: this.config.KAFKA_FROM_BEGINING,
@@ -54,6 +54,6 @@ export class KafkaMessageConsumerService implements OnModuleInit {
         },
       },
       this.config.KAFKA_OFFER_MAX_VALUE_GROUP
-    );
+    );*/
   }
 }

@@ -6,6 +6,8 @@ import { LlmImageOptimizationProxy } from './proxies/llm-image-optimization.prox
 import { KafkaProducerService } from 'src/kafka-producer/kafka-producer.service';
 import { OutletPhotoService } from 'src/outlet/services/outlet-photo.service';
 import { OutletPhoto } from 'src/outlet/models/outlet-photo.model';
+import { Outlet } from 'src/outlet/models/outlet.model';
+import { OutletProfileMetadata } from 'src/outlet-profile/entities/outlet-profile.model';
 import { OutletKafkaProducerService } from './services/outlet-kafka-producer.service';
 import { ConfigModule } from '@nestjs/config';
 import { blobConfig } from 'config/server.config';
@@ -28,9 +30,9 @@ import { CustomLoggerModule } from 'src/logger/logger.module';
       cache: true,
       isGlobal: true,
     }),
-    SequelizeModule.forFeature([OutletPhoto]),
+    SequelizeModule.forFeature([OutletPhoto, Outlet, OutletProfileMetadata]),
     CustomLoggerModule,
   ],
-  exports: [KafkaProducerService, UploadOutletImageProxy],
+  exports: [KafkaProducerService, UploadOutletImageProxy, LlmImageOptimizationProxy],
 })
 export class ImageModule {}

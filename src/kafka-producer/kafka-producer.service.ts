@@ -5,28 +5,26 @@ import { Producer, Kafka, ProducerRecord } from 'kafkajs';
 
 @Injectable()
 export class KafkaProducerService {
+  private readonly kafka = null;
+  private config: IKafkaProducerConfig;
+  private readonly producer: Producer = null;
 
-    private readonly kafka = null;
-    private config: IKafkaProducerConfig;
-    private readonly producer: Producer = null;
+  constructor(private configService: ConfigService) {
+    this.config = this.configService.get('kafka-producer');
+    this.kafka = new Kafka({
+      clientId: this.config.KAFKA_CLIENT_ID,
+      brokers: this.config.KAFKA_PRODUCER_BROKERS.split(','),
+    });
+    this.producer = this.kafka.producer();
+    // this.producer.connect(); // Bypassed for local testing
+    console.log('Kafka initialized...');
+  }
 
-    constructor(private configService: ConfigService) {
-        this.config = this.configService.get("kafka-producer");
-        this.kafka = new Kafka({
-            clientId: this.config.KAFKA_CLIENT_ID,
-            brokers: this.config.KAFKA_PRODUCER_BROKERS.split(',')
-        });
-        this.producer = this.kafka.producer();
-        this.producer.connect();
-        console.log("Kafka initialized...");
-    }
+  async produce(record: ProducerRecord) {
+    this.producer.send(record);
+  }
 
-    async produce(record: ProducerRecord) {
-        this.producer.send(record);
-    }
-
-    async onApplicationShutdown() {
-        await this.producer.disconnect();
-    }
+  async onApplicationShutdown() {
+    await this.producer.disconnect();
+  }
 }
-

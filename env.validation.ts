@@ -214,6 +214,14 @@ export class EnvironmentVariables implements IAppConfig, IDatabaseConfig {
 
   @IsNotEmpty()
   @IsString()
+  CREATE_OUTLET_DEFAULT_OFFER: string;
+
+  @IsNotEmpty()
+  @IsString()
+  LLM_MASTER_PROFILE_ID: string;
+
+  @IsNotEmpty()
+  @IsString()
   OUTLET_SCHEDULED_OFFER: string;
 
   @IsNotEmpty()

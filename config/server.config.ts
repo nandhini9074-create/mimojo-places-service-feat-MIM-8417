@@ -85,6 +85,7 @@ export const internalApisConfig = registerAs(
     MIMOJO_PROFILE_ID: process.env[EnvKeysEnum.MIMOJO_PROFILE_ID] as string,
     EIB_PROFILE_ID: process.env[EnvKeysEnum.EIB_PROFILE_ID],
     ADIB_PROFILE_ID: process.env[EnvKeysEnum.ADIB_PROFILE_ID],
+    LLM_MASTER_PROFILE_ID: process.env[EnvKeysEnum.LLM_MASTER_PROFILE_ID],
     ALL_OUTLETS_OFFERS_OF_MERCHANT: process.env[EnvKeysEnum.ALL_OUTLETS_OFFERS_OF_MERCHANT] as string,
     CREATE_OUTLET_DEFAULT_OFFER: process.env[EnvKeysEnum.CREATE_OUTLET_DEFAULT_OFFER] as string,
     UPDATE_ACTIVE_INACTIVE_OUTLET_COUNT: process.env[EnvKeysEnum.UPDATE_ACTIVE_INACTIVE_OUTLET_COUNT] as string,

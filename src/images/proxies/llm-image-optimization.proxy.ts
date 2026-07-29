@@ -11,22 +11,21 @@ export class LlmImageOptimizationProxy {
     this.baseUrl = this.configService.get<string>('OUTLET_IMAGES_SERVICE_URL');
   }
 
-  async proxyImageToImagesService(fileBuffer: Buffer, filename: string): Promise<Buffer> {
+  async proxyImageToImagesService(fileBuffer: Buffer, filename: string, profileId?: string): Promise<Buffer> {
     const formData = new FormData();
     formData.append('image', fileBuffer, { filename });
 
-    const response = await axios.post(
-      `${this.baseUrl}/files/optimize-image-buffer`,
-      formData,
-      {
-        headers: {
-          ...formData.getHeaders(),
-        },
-        responseType: 'arraybuffer',
-      }
-    );
+    if (profileId) {
+      formData.append('profileId', profileId);
+    }
+
+    const response = await axios.post(`${this.baseUrl}/v1/files/optimize-image-buffer`, formData, {
+      headers: {
+        ...formData.getHeaders(),
+      },
+      responseType: 'arraybuffer',
+    });
 
     return Buffer.from(response.data);
   }
 }
-

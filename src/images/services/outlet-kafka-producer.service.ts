@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { ConfigService } from '@nestjs/config';
 import { IBlobConfig, IKafkaProducerConfig } from 'config/interface';
 import { KafkaProducerService } from 'src/kafka-producer/kafka-producer.service';
@@ -10,6 +11,9 @@ import { OutletPhotoService } from '../../outlet/services/outlet-photo.service';
 import { UploadOutletImageDto } from 'src/images/dtos/upload-outlet-image-dto';
 import { UploadOutletImageProxy } from 'src/images/proxies/outlet-image-upload.proxy';
 import { LlmImageOptimizationProxy } from 'src/images/proxies/llm-image-optimization.proxy';
+import { Outlet } from '../../outlet/models/outlet.model';
+
+import { OutletProfileMetadata } from 'src/outlet-profile/entities/outlet-profile.model';
 
 @Injectable()
 export class OutletKafkaProducerService {
@@ -24,7 +28,9 @@ export class OutletKafkaProducerService {
     private configService: ConfigService,
     private outletPhotoService: OutletPhotoService,
     private uploadOutletImageProxy: UploadOutletImageProxy,
-    private llmImageOptimizationProxy: LlmImageOptimizationProxy
+    private llmImageOptimizationProxy: LlmImageOptimizationProxy,
+    @InjectModel(Outlet) private readonly outletModel: typeof Outlet,
+    @InjectModel(OutletProfileMetadata) private readonly outletProfileMetadataModel: typeof OutletProfileMetadata
   ) {
     this.config = this.configService.get('kafka-producer');
     const { BLOB_CONNECTION_STRING, BLOB_CONTAINER_NAME, BLOB_SAS_TOKEN, BLOB_URL } =
@@ -45,12 +51,25 @@ export class OutletKafkaProducerService {
   }
 
   async uploadImageAndPush(uploadOutletImage: UploadOutletImageDto, images: Express.Multer.File[]) {
+    let profileId = this.configService.get<string>('internal-apis.LLM_MASTER_PROFILE_ID');
+    if (uploadOutletImage?.outletId) {
+      const outletProfile = await this.outletProfileMetadataModel.findOne({
+        where: { outletId: uploadOutletImage.outletId },
+      });
+      if (outletProfile) profileId = outletProfile.profileId;
+    }
+
     for (const image of images) {
       if (image) {
         const id: string = uuid();
         const fileName = `${id}${extname(image.originalname)}`;
 
-        const optimizedBuffer = await this.llmImageOptimizationProxy.proxyImageToImagesService(image.buffer, image.originalname);
+        // Passing the profileId so the LLM knows how to crop it
+        const optimizedBuffer = await this.llmImageOptimizationProxy.proxyImageToImagesService(
+          image.buffer,
+          image.originalname,
+          profileId
+        );
 
         //Uploading to Blob
         const blobClient = this.getBlobClient(fileName);

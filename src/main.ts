@@ -14,7 +14,7 @@ import { randomUUID } from 'crypto';
 
 // Minimal crypto polyfill for randomUUID; full Crypto type not required
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-(global as any).crypto = { randomUUID };
+//(global as any).crypto = { randomUUID };
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);

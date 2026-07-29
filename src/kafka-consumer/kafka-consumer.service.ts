@@ -9,7 +9,7 @@ export class KafkaConsumerService implements OnApplicationShutdown {
   private config: IKafkaConsumerConfig;
 
   constructor(private readonly configService: ConfigService) {
-    this.config = this.configService.get("kafka-consumer");
+    this.config = this.configService.get('kafka-consumer');
     this.kafka = new Kafka({
       clientId: this.config.KAFKA_CLIENT_ID,
       brokers: this.config.KAFKA_CONSUMER_BROKERS.split(','),
@@ -18,7 +18,7 @@ export class KafkaConsumerService implements OnApplicationShutdown {
 
   private readonly consumers: Consumer[] = [];
 
-  async consume(topic: ConsumerSubscribeTopics, config: ConsumerRunConfig, groupId: string) {
+  /*async consume(topic: ConsumerSubscribeTopics, config: ConsumerRunConfig, groupId: string) {
     const consumer = this.kafka.consumer({
       groupId,
     });
@@ -26,7 +26,7 @@ export class KafkaConsumerService implements OnApplicationShutdown {
     await consumer.connect();
     await consumer.run(config);
     this.consumers.push(consumer);
-  }
+  }*/
 
   async onApplicationShutdown() {
     for (const consumer of this.consumers) {
