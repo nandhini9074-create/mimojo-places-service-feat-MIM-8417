@@ -16,7 +16,7 @@ export class KafkaProducerService {
       brokers: this.config.KAFKA_PRODUCER_BROKERS.split(','),
     });
     this.producer = this.kafka.producer();
-    // this.producer.connect(); // Bypassed for local testing
+    //this.producer.connect();
     console.log('Kafka initialized...');
   }
 

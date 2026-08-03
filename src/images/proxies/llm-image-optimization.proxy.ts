@@ -19,13 +19,19 @@ export class LlmImageOptimizationProxy {
       formData.append('profileId', profileId);
     }
 
-    const response = await axios.post(`${this.baseUrl}/v1/files/optimize-image-buffer`, formData, {
-      headers: {
-        ...formData.getHeaders(),
-      },
-      responseType: 'arraybuffer',
-    });
+    try {
+      const response = await axios.post(`${this.baseUrl}/v1/files/optimize-image-buffer`, formData, {
+        headers: {
+          ...formData.getHeaders(),
+        },
+        responseType: 'arraybuffer',
+      });
 
-    return Buffer.from(response.data);
+      return Buffer.from(response.data);
+    } catch (error) {
+      const errorMsg = error.response?.data?.toString() || error.message;
+      console.error('LLM Proxy Error from images-service:', errorMsg);
+      throw new Error(`LLM Proxy failed: ${errorMsg}`);
+    }
   }
 }

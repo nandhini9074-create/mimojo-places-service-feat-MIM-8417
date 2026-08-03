@@ -75,6 +75,8 @@ export class OutletKafkaProducerService {
         const blobClient = this.getBlobClient(fileName);
         await blobClient.uploadData(optimizedBuffer);
 
+        console.log(`Verify the image here: ${this.blobUrl}/${fileName}?${this.blobSasToken}\n`);
+
         await this.pushToOutletImageService(
           uploadOutletImage.outletId,
           {
@@ -115,6 +117,14 @@ export class OutletKafkaProducerService {
     token: Record<string, string | string[] | undefined>
   ): Promise<{ response: unknown; isFirstHeroImage: boolean } | undefined> {
     if (image) {
+      let profileId = this.configService.get<string>('internal-apis.LLM_MASTER_PROFILE_ID');
+      if (uploadOutletImage?.outletId) {
+        const outletProfile = await this.outletProfileMetadataModel.findOne({
+          where: { outletId: uploadOutletImage.outletId },
+        });
+        if (outletProfile) profileId = outletProfile.profileId;
+      }
+
       const id: string = uuid();
       const fileName = `${id}${extname(image.originalname)}`;
       let isFirstHeroImage = false;
@@ -128,9 +138,16 @@ export class OutletKafkaProducerService {
         }
       }
 
+      // Passing the profileId so the LLM knows how to crop it
+      const optimizedBuffer = await this.llmImageOptimizationProxy.proxyImageToImagesService(
+        image.buffer,
+        image.originalname,
+        profileId
+      );
+
       //Uploading to Blob
       const blobClient = this.getBlobClient(fileName);
-      await blobClient.uploadData(image.buffer);
+      await blobClient.uploadData(optimizedBuffer);
       const response = await this.uploadOutletImageProxy.uploadOutletImageDirect(
         uploadOutletImage.outletId,
         fileName,
